@@ -81,9 +81,21 @@ const displayCart = () => {
     modalFooter.className = "modal-footer"
     modalFooter.innerHTML = `
     <div class="total-price">Total de la compra: ${total} US$</div>
-
+    <button class="clear-cart-btn">Vaciar Carrito</button>
     `;
     modalContainer.append(modalFooter);
+
+    // Event listener para el botón de vaciar carrito
+    const clearCartBtn = modalFooter.querySelector(".clear-cart-btn");
+    clearCartBtn.addEventListener("click", () => {
+        if (cart.length > 0) {
+            if (confirm("¿Estás seguro de que deseas vaciar todo el carrito?")) {
+                cart.splice(0, cart.length);
+                displayCart();
+                displayCartCounter();
+            }
+        }
+    });
     }else {
         const modalText = document.createElement("h2");
         modalText.className = "modal-body";
@@ -104,9 +116,9 @@ const deleteCartProduct = (id) => {
 const displayCartCounter = () => {
     const cartLength = cart.reduce((acc, el) => acc + el.quanty, 0);
     if (cartLength > 0) {
-        cartCounter.style.display = "block";
+        cartCounter.classList.add("active");
         cartCounter.innerText = cartLength;
-    }else{
-        cartCounter.style.display = "none"
+    } else {
+        cartCounter.classList.remove("active");
     }
 };
